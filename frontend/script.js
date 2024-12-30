@@ -32,9 +32,11 @@ function handleNavigation(page) {
     if(pages[page]){
         pages[page].style.display = 'block';
     }
+
+    handleReferences();
 }
 
-function handleLogin(event) {
+function handleLogin() {
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
 
@@ -46,11 +48,10 @@ function handleLogin(event) {
         localStorage.setItem("session", session);
     }
 
-    console.log("Logging in as user " + localStorage.getItem('session'))
     handleNavigation('home');
 }
 
-function handleRegister(event) {
+function handleRegister() {
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
 
@@ -58,14 +59,28 @@ function handleRegister(event) {
 
     const session = apiRegisterUser(data);
 
-    if(session) {
-        localStorage.setItem("session", session);
-    }
-
-    handleNavigation('home');
+    handleLogin();
 }
 
 function handleLogout() {
     localStorage.removeItem("session");
     handleNavigation('login');
+}
+
+function getUsername() {
+    session = localStorage.getItem('session');
+
+    if(session){
+        return session;
+    }
+}
+
+function handleReferences(){
+    handleUsernameReferences();
+}
+
+function handleUsernameReferences() {
+    username = getUsername();
+
+    document.querySelector('.username-text').textContent = username;
 }

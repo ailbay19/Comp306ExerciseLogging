@@ -12,6 +12,7 @@
     />
   </head>
 
+  <!-- Navigation header, Tabs-->
   <body>
     <header>
       <nav class="navbar navbar-expand bg-body-tertiary" data-bs-theme="dark">
@@ -24,14 +25,17 @@
             <a class="nav-link" href="#" onclick="handleNavigation('gym')"
               >Gym</a
             >
-            <a class="nav-link" href="#" onclick="handleNavigation('exercise')"
-              >Exercise</a
+            <a class="nav-link" href="#" onclick="handleNavigation('workout')"
+              >Workout</a
             >
             <a
               class="nav-link"
               href="#"
               onclick="handleNavigation('performance')"
               >Performance</a
+            >
+            <a class="nav-link" href="#" onclick="handleNavigation('exercise')"
+              >Exercise</a
             >
             <a class="nav-link" href="#" onclick="handleNavigation('profile')"
               >Profile</a
@@ -42,9 +46,10 @@
       </nav>
     </header>
 
+    <!-- Content Bodies-->
     <div
-      class="container login-container bg-body-tertiary"
       id="login-container"
+      class="container login-container bg-body-tertiary"
     >
       <form>
         <div class="mb-3">
@@ -60,18 +65,43 @@
           >
           <input type="password" id="login-password" class="login-password" />
         </div>
+        <button type="button" class="btn btn-primary" onclick="handleLogin()">
+          Login
+        </button>
         <button
           type="button"
-          class="btn btn-primary mb-3"
-          onclick="handleLogin()"
+          class="btn btn-primary"
+          onclick="handleRegister()"
         >
-          Login
+          Register
         </button>
       </form>
     </div>
 
-    <div class="container home-container bg-body-tertiary" id="home-container">
-      <p>Welcome, {user}</p>
+    <div id="home-container" class="container home-container">
+      <p>Welcome, <span class="username-text"></span></p>
+    </div>
+
+    <div id="gym-container" class="container gym-container">
+      <p>Gyms</p>
+      <p>Gym Leaderboard</p>
+    </div>
+
+    <div id="workout-container" class="container workout-container">
+      <p>Add Workout</p>
+    </div>
+
+    <div id="performance-container" class="container performance-container">
+      <p>Add Performance</p>
+      <p>Show Performances</p>
+    </div>
+
+    <div id="exercise-container" class="container exercise-container">
+      <p>Exercises</p>
+    </div>
+
+    <div id="profile-container" class="container profile-container">
+      <p>Profile</p>
     </div>
 
     <script src="script.js"></script>
