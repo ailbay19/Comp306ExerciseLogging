@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Exercise Logging</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <header>
+      <nav class="navbar navbar-expand bg-body-tertiary" data-bs-theme="dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Loggy</a>
+          <div class="navbar-nav nav-underline">
+            <a class="nav-link" href="#" onclick="handleNavigation('home')"
+              >Home</a
+            >
+            <a class="nav-link" href="#" onclick="handleNavigation('gym')"
+              >Gym</a
+            >
+            <a class="nav-link" href="#" onclick="handleNavigation('exercise')"
+              >Exercise</a
+            >
+            <a
+              class="nav-link"
+              href="#"
+              onclick="handleNavigation('performance')"
+              >Performance</a
+            >
+            <a class="nav-link" href="#" onclick="handleNavigation('profile')"
+              >Profile</a
+            >
+            <a class="nav-link" href="#" onclick="handleLogout()">X</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div
+      class="container login-container bg-body-tertiary"
+      id="login-container"
+    >
+      <form>
+        <div class="mb-3">
+          <label for="login-username" class="login-username-label"
+            >Username</label
+          >
+          <input type="text" id="login-username" class="login-username" />
+        </div>
+
+        <div class="mb-3">
+          <label for="login-password" class="login-password-label"
+            >Password</label
+          >
+          <input type="password" id="login-password" class="login-password" />
+        </div>
+        <button
+          type="button"
+          class="btn btn-primary mb-3"
+          onclick="handleLogin()"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+
+    <div class="container home-container bg-body-tertiary" id="home-container">
+      <p>Welcome, {user}</p>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="api.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

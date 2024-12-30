@@ -13,7 +13,6 @@ const pages = {
     'profile':document.getElementById("profile-container"),
 }
 
-
 function handleNavigation(page) {
     // Hide all pages
     for (let key in pages) {
@@ -47,6 +46,7 @@ function handleLogin(event) {
         localStorage.setItem("session", session);
     }
 
+    console.log("Logging in as user " + localStorage.getItem('session'))
     handleNavigation('home');
 }
 
