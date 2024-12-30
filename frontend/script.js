@@ -1,52 +1,43 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    const session = localStorage.getItem("session");
-
-    if (session) {
-        hideLoginContainer();
-        showUserContainer();
-    } else {
-        showLoginContainer();
-        hideUserContainer();
-    }
+    handleNavigation('home');
 });
 
-function hideLoginContainer(){
-    document.getElementById("login-container").style.display = "none"
-    document.getElementById("navbar-logout").style.display = "block"
+const pages = {
+    'login':document.getElementById("login-container"),
+    'home':document.getElementById("home-container"),
+    'gym':document.getElementById("gym-container"),
+    'workout':document.getElementById("workout-container"),
+    'exercise':document.getElementById("exercise-container"),
+    'performance':document.getElementById("performance-container"),
+    'profile':document.getElementById("profile-container"),
 }
 
-function showLoginContainer() {
-    document.getElementById("login-container").style.display = "block";
-    document.getElementById("navbar-logout").style.display = "none";
-}
 
-function hideUserContainer(){
-    document.getElementById("user-container").style.display = "none";
-}
+function handleNavigation(page) {
+    // Hide all pages
+    for (let key in pages) {
+        if(!pages[key])
+            continue;
+        pages[key].style.display = 'none';
+    }
 
-function showUserContainer() {
-    document.getElementById("user-container").style.display = "block";
-    document.getElementById("user-container-header").textContent = localStorage.getItem("session");
-}
+    // force login
+    const session = localStorage.getItem('session');
+    if(!session){
+        pages['login'].style.display = 'block';
+        return;
+    }
 
-function apiLoginUser(data) {
-    if(!data['username'])
-        return 'Guest User';
-
-    return data['username'];
-}
-
-function apiRegisterUser(data) {
-    if(!data['username'])
-        alert("no username");
-
-    return data['username'];
+    // If match a page, show it
+    if(pages[page]){
+        pages[page].style.display = 'block';
+    }
 }
 
 function handleLogin(event) {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
 
     const data = {"username": username, "password": password};
 
@@ -56,12 +47,12 @@ function handleLogin(event) {
         localStorage.setItem("session", session);
     }
 
-    window.location.href = "index.html";
+    handleNavigation('home');
 }
 
 function handleRegister(event) {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
 
     const data = {"username": username, "password": password};
 
@@ -71,9 +62,10 @@ function handleRegister(event) {
         localStorage.setItem("session", session);
     }
 
-    window.location.href = "index.html";
+    handleNavigation('home');
 }
 
 function handleLogout() {
     localStorage.removeItem("session");
+    handleNavigation('login');
 }
