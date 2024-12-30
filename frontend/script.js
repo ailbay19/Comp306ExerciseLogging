@@ -90,6 +90,32 @@ function handleUsernameReferences() {
 
 function handleGyms(page){
     gyms = apiFetchGyms();
+
+    // Populate Gyms Table
+    const tableBody = document.querySelector('#gyms-table tbody');
+    tableBody.innerHTML = ''; // clear data before populating
+
+    gyms.forEach(gym => {
+        row = document.createElement('tr');
+
+        cell = document.createElement('td');
+        cell.textContent = gym.id; 
+        row.appendChild(cell);
+
+        cell = document.createElement('td');
+        cell.textContent = gym.name;
+        row.appendChild(cell);
+
+        cell = document.createElement('td');
+        cell.textContent = gym.location;
+        row.appendChild(cell);
+
+        cell = document.createElement('td');
+        cell.textContent = gym.price;
+        row.appendChild(cell);
+
+        tableBody.appendChild(row);
+    });
 }
 
 function handleExercises(page){
@@ -98,4 +124,47 @@ function handleExercises(page){
 
 function handlePerformances(page){
     performances = apiFetchPerformances();
+}
+
+function handleLeaderboardSelectGym(){
+    selectedExercise = document.getElementById('leaderboard-selected-exercise').value;
+    console.log(selectedExercise);
+    
+    // Show or hide table
+    if(selectedExercise == ''){
+        document.getElementById('gym-leaderboard-table').style.display = 'none';
+        return;
+    }
+    
+    document.getElementById('gym-leaderboard-table').style.display = '';
+
+    // Handle table population
+    params = {"gym": "user-gym", "exercise": selectedExercise}
+    leaderboard = apiFetchLeaderboard(params);
+
+
+    const tableBody = document.querySelector('#gym-leaderboard-table tbody');
+    tableBody.innerHTML = ''; // clear data before populating
+
+    leaderboard.forEach(user => {
+        const row = document.createElement('tr');
+  
+        cell = document.createElement('td');
+        cell.textContent = user.rank; 
+        row.appendChild(cell);
+  
+        cell = document.createElement('td');
+        cell.textContent = user.username;
+        row.appendChild(cell);
+  
+        cell = document.createElement('td');
+        cell.textContent = user.value1;
+        row.appendChild(cell);
+  
+        cell = document.createElement('td');
+        cell.textContent = user.value2;
+        row.appendChild(cell);
+  
+        tableBody.appendChild(row);
+      });
 }
