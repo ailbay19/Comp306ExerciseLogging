@@ -11,3 +11,15 @@ function apiRegisterUser(data) {
 
     return data['username'];
 }
+
+function apiFetchGyms(){
+    return null;
+}
+
+function apiFetchExercises() {
+    return null;
+}
+
+function apiFetchPerformances() {
+    return null;
+}

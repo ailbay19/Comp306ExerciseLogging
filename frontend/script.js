@@ -33,7 +33,7 @@ function handleNavigation(page) {
         pages[page].style.display = 'block';
     }
 
-    handleReferences();
+    handleReferences(page);
 }
 
 function handleLogin() {
@@ -75,12 +75,27 @@ function getUsername() {
     }
 }
 
-function handleReferences(){
+function handleReferences(page){
     handleUsernameReferences();
+    handleGyms(page);
+    handleExercises(page);
+    handlePerformances(page);
 }
 
 function handleUsernameReferences() {
     username = getUsername();
 
     document.querySelector('.username-text').textContent = username;
+}
+
+function handleGyms(page){
+    gyms = apiFetchGyms();
+}
+
+function handleExercises(page){
+    exercises = apiFetchExercises();
+}
+
+function handlePerformances(page){
+    performances = apiFetchPerformances();
 }
