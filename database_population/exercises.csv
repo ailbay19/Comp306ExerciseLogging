@@ -1,0 +1,19 @@
+﻿name,required_equipment,level
+Bench Press,Barbell,Beginner
+Squat,Dumbbell,Beginner
+Deadlift,None,Advanced
+Pull-Up,Cable Machine,Intermediate
+Push-Up,Cable Machine,Advanced
+Dumbbell Curl,None,Intermediate
+Lunges,None,Intermediate
+Plank,None,Advanced
+Leg Press,Dumbbell,Beginner
+Overhead Press,Cable Machine,Beginner
+Cable Row,None,Beginner
+Tricep Dip,Dumbbell,Advanced
+Burpees,Dumbbell,Beginner
+Kettlebell Swing,Barbell,Intermediate
+Mountain Climbers,Barbell,Advanced
+Jumping Jacks,Barbell,Beginner
+Step-Ups,Cable Machine,Advanced
+Russian Twists,Dumbbell,Intermediate
