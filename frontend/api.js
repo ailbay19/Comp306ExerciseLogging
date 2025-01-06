@@ -26,7 +26,7 @@ function clearCookie(name) {
 
 function apiLogin(params) {
   if (!params['username'])
-    return { 'username': 'Guest User' };
+    params['username'] = 'Guest User';
 
   userDetails = { "username": params["username"] };
 
