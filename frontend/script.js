@@ -1,170 +1,125 @@
 
-document.addEventListener("DOMContentLoaded", () => {
-    handleNavigation('home');
+
+// Gym ve Trainer Seçimi
+$("#gym-trainer-form").submit(function (event) {
+    event.preventDefault();
+
+    var gym = $("#gym").val();
+    var trainer = $("#trainer").val();
+
+    // Gym ve Hoca Seçimi Yapıldıktan Sonra, Bu Bölüm Kapanacak
+    $("#gym-trainer-form").hide();
+
+    // Egzersiz Filtreleme Bölümünü Göster
+    $("#exercise-filter-form").show();
 });
 
-const pages = {
-    'login':document.getElementById("login-container"),
-    'home':document.getElementById("home-container"),
-    'gym':document.getElementById("gym-container"),
-    'workout':document.getElementById("workout-container"),
-    'exercise':document.getElementById("exercise-container"),
-    'performance':document.getElementById("performance-container"),
-    'profile':document.getElementById("profile-container"),
-}
+// Egzersiz Filtreleme
+$("#exercise-filter").submit(function (event) {
+    event.preventDefault();
 
-function handleNavigation(page) {
-    // Hide all pages
-    for (let key in pages) {
-        if(!pages[key])
-            continue;
-        pages[key].style.display = 'none';
-    }
+    var targetMuscle = $("#target-muscle").val();
+    var level = $("#level").val();
+    var equipment = $("#equipment").val();
 
-    // force login
-    const session = localStorage.getItem('session');
-    if(!session){
-        pages['login'].style.display = 'block';
-        return;
-    }
+    params = {};
+    exercises = apiFetchExercises(params);
 
-    // If match a page, show it
-    if(pages[page]){
-        pages[page].style.display = 'block';
-    }
-
-    handleReferences(page);
-}
-
-function handleLogin() {
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-
-    const data = {"username": username, "password": password};
-
-    const session = apiLoginUser(data);
-
-    if(session) {
-        localStorage.setItem("session", session);
-    }
-
-    handleNavigation('home');
-}
-
-function handleRegister() {
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-
-    const data = {"username": username, "password": password};
-
-    const session = apiRegisterUser(data);
-
-    handleLogin();
-}
-
-function handleLogout() {
-    localStorage.removeItem("session");
-    handleNavigation('login');
-}
-
-function getUsername() {
-    session = localStorage.getItem('session');
-
-    if(session){
-        return session;
-    }
-}
-
-function handleReferences(page){
-    handleUsernameReferences();
-    handleGyms(page);
-    handleExercises(page);
-    handlePerformances(page);
-}
-
-function handleUsernameReferences() {
-    username = getUsername();
-
-    document.querySelector('.username-text').textContent = username;
-}
-
-function handleGyms(page){
-    gyms = apiFetchGyms();
-
-    // Populate Gyms Table
-    const tableBody = document.querySelector('#gyms-table tbody');
-    tableBody.innerHTML = ''; // clear data before populating
-
-    gyms.forEach(gym => {
-        row = document.createElement('tr');
-
-        cell = document.createElement('td');
-        cell.textContent = gym.id; 
-        row.appendChild(cell);
-
-        cell = document.createElement('td');
-        cell.textContent = gym.name;
-        row.appendChild(cell);
-
-        cell = document.createElement('td');
-        cell.textContent = gym.location;
-        row.appendChild(cell);
-
-        cell = document.createElement('td');
-        cell.textContent = gym.price;
-        row.appendChild(cell);
-
-        tableBody.appendChild(row);
+    // Egzersizleri filtrele
+    var filteredExercises = exercises.filter((exercise) => {
+        return (
+            (!targetMuscle || exercise.target_muscle === targetMuscle) &&
+            (!level || exercise.level === level) &&
+            (!equipment || exercise.needed_equipment === equipment)
+        );
     });
-}
 
-function handleExercises(page){
-    exercises = apiFetchExercises();
-}
+    // Filtrelenmiş egzersizleri listele
+    $("#exercise-list").html("");
+    filteredExercises.forEach((exercise) => {
+        $("#exercise-list").append(`
+        <div class="card mb-3 exercise-card" data-exercise="${exercise.name}">
+            <div class="card-body d-flex justify-content-between">
+                <h5 class="card-title">${exercise.name}</h5>
+                <button class="btn btn-primary select-exercise btn-xs" data-exercise="${exercise.name}">Seç</button>
+            </div>
+        </div>
+    `);
+    });
 
-function handlePerformances(page){
-    performances = apiFetchPerformances();
-}
+    $("#exercise-entry-form").show();
+});
 
-function handleLeaderboardSelectGym(){
-    selectedExercise = document.getElementById('leaderboard-selected-exercise').value;
-    console.log(selectedExercise);
-    
-    // Show or hide table
-    if(selectedExercise == ''){
-        document.getElementById('gym-leaderboard-table').style.display = 'none';
-        return;
+// Egzersiz Seçimi
+$(document).on("click", ".select-exercise", function () {
+    var exerciseName = $(this).data("exercise");
+
+    // Egzersiz bilgilerini göster
+    var selectedExercise = exercises.find((ex) => ex.name === exerciseName);
+    $("#exercise-entry-form").data("exercise", selectedExercise.name); // Egzersiz adını sakla
+
+    // Geçmiş performanslar bölümünü güncelle ve göster
+    $("#exercise-history").show();
+    $("#history-list").html("");
+    if (selectedExercise.history.length > 0) {
+        selectedExercise.history.forEach((entry) => {
+            $("#history-list").append(`
+            <div class="history-item">
+                <strong>Ağırlık:</strong> ${entry.weight}kg, <strong>Setler:</strong> ${entry.sets}, <strong>Tekrarlar:</strong> ${entry.reps}
+            </div>
+        `);
+        });
+    } else {
+        $("#history-list").html(
+            "<p>Bu egzersiz için geçmiş performans kaydı bulunmamaktadır.</p>"
+        );
     }
-    
-    document.getElementById('gym-leaderboard-table').style.display = '';
 
-    // Handle table population
-    params = {"gym": "user-gym", "exercise": selectedExercise}
-    leaderboard = apiFetchLeaderboard(params);
+    // Ağırlık, set, tekrar giriş formunu göster
+    $("#exercise-entry-details").show();
 
+    // Performans Karşılaştırma bölümünü güncelle ve göster
+    $("#comparison-section").show();
+    $("#comparison-section tbody").html(""); // Eski veriyi temizle
+    exercises.forEach((ex) => {
+        if (ex.name === exerciseName && ex.history.length > 0) {
+            ex.history.forEach((entry) => {
+                $("#comparison-section tbody").append(`
+                <tr>
+                    <td>Me (Ben)</td>
+                    <td>${entry.weight}</td>
+                    <td>${entry.sets}</td>
+                    <td>${entry.reps}</td>
+                </tr>
+            `);
+            });
+        }
+    });
+});
 
-    const tableBody = document.querySelector('#gym-leaderboard-table tbody');
-    tableBody.innerHTML = ''; // clear data before populating
+// Egzersiz Kaydet
+$("#exercise-form").submit(function (event) {
+    event.preventDefault();
 
-    leaderboard.forEach(user => {
-        const row = document.createElement('tr');
-  
-        cell = document.createElement('td');
-        cell.textContent = user.rank; 
-        row.appendChild(cell);
-  
-        cell = document.createElement('td');
-        cell.textContent = user.username;
-        row.appendChild(cell);
-  
-        cell = document.createElement('td');
-        cell.textContent = user.value1;
-        row.appendChild(cell);
-  
-        cell = document.createElement('td');
-        cell.textContent = user.value2;
-        row.appendChild(cell);
-  
-        tableBody.appendChild(row);
-      });
-}
+    var selectedExerciseName = $("#exercise-entry-form").data("exercise");
+    var selectedExercise = exercises.find(
+        (ex) => ex.name === selectedExerciseName
+    );
+    var weight = $("#weight").val();
+    var sets = $("#sets").val();
+    var reps = $("#reps").val();
+
+    // Kaydedilen egzersiz bilgisini egzersizin geçmişine ekle
+    selectedExercise.history.push({ weight, sets, reps });
+
+    // "Günün Antremanına" ekle
+    $("#saved-exercises-list").append(`
+    <li class="list-group-item">
+        <strong>${selectedExercise.name}</strong>: ${weight}kg, ${sets} Set, ${reps} Tekrar
+    </li>
+`);
+
+    // Formu temizle
+    $("#exercise-form")[0].reset();
+    $("#exercise-entry-details").hide(); // Egzersiz giriş formunu gizle
+});

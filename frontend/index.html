@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Exercise Logging</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Egzersiz Girişi</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -12,148 +12,223 @@
     />
     <link rel="stylesheet" href="style.css" />
   </head>
+  <body class="bg-light">
+    <div class="container mt-5">
+      <div class="row">
+        <!-- Sol Panel (Filtreleme ve Egzersiz Girişi) -->
+        <div class="col-md-4" id="left-panel">
+          <h4>STRONG</h4>
 
-  <!-- Navigation header, Tabs-->
-  <body>
-    <header>
-      <nav class="navbar navbar-expand bg-body-tertiary" data-bs-theme="dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Loggy</a>
-          <div class="navbar-nav nav-underline">
-            <a class="nav-link" href="#" onclick="handleNavigation('home')"
-              >Home</a
-            >
-            <a class="nav-link" href="#" onclick="handleNavigation('gym')"
-              >Gym</a
-            >
-            <a class="nav-link" href="#" onclick="handleNavigation('workout')"
-              >Workout</a
-            >
-            <a
-              class="nav-link"
-              href="#"
-              onclick="handleNavigation('performance')"
-              >Performance</a
-            >
-            <a class="nav-link" href="#" onclick="handleNavigation('exercise')"
-              >Exercise</a
-            >
-            <a class="nav-link" href="#" onclick="handleNavigation('profile')"
-              >Profile</a
-            >
-            <a class="nav-link" href="#" onclick="handleLogout()">X</a>
+          <!-- Gym ve Personal Trainer Seçim Formu -->
+          <form id="gym-trainer-form">
+            <!-- Gym Seçimi -->
+            <div class="mb-3">
+              <h4>Gym ve PT Seçimi</h4>
+              <label for="gym" class="form-label">Gym Seçin</label>
+              <select class="form-select" id="gym" name="gym">
+                <option value="">Gym Seçin</option>
+                <option value="Gym1">Gym 1</option>
+                <option value="Gym2">Gym 2</option>
+                <option value="Gym3">Gym 3</option>
+              </select>
+            </div>
+
+            <!-- Personal Trainer Seçimi -->
+            <div class="mb-3">
+              <label for="trainer" class="form-label">Personal Trainer</label>
+              <select class="form-select" id="trainer" name="trainer">
+                <option value="">Hocasız Antrenman</option>
+                <option value="Trainer1">Trainer 1</option>
+                <option value="Trainer2">Trainer 2</option>
+                <option value="Trainer3">Trainer 3</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+              Seçimi Tamamla
+            </button>
+          </form>
+
+          <!-- Egzersiz Filtreleme Formu -->
+          <div id="exercise-filter-form" class="mt-4" style="display: none">
+            <h5>Egzersiz Filtreleme</h5>
+            <form id="exercise-filter">
+              <div class="mb-3">
+                <label for="target-muscle" class="form-label">Hedef Kas</label>
+                <select class="form-select" id="target-muscle">
+                  <option value="">Tüm Kaslar</option>
+                  <option value="Legs">Bacak</option>
+                  <option value="Chest">Göğüs</option>
+                  <option value="Back">Sırt</option>
+                  <option value="Arms">Kollar</option>
+                  <option value="Shoulders">Omuzlar</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="level" class="form-label">Seviye</label>
+                <select class="form-select" id="level">
+                  <option value="">Tüm Seviyeler</option>
+                  <option value="Beginner">Başlangıç</option>
+                  <option value="Intermediate">Orta Seviye</option>
+                  <option value="Advanced">İleri Seviye</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="equipment" class="form-label">Ekipman</label>
+                <select class="form-select" id="equipment">
+                  <option value="">Tüm Ekipmanlar</option>
+                  <option value="None">Ekipmansız</option>
+                  <option value="Dumbbell">Dumbbell</option>
+                  <option value="Barbell">Barbell</option>
+                  <option value="Pull-up Bar">Pull-up Bar</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-secondary w-100">
+                Filtrele
+              </button>
+            </form>
+          </div>
+
+          <!-- Egzersiz Seçimi ve Giriş Formu -->
+          <div id="exercise-entry-form" class="mt-4" style="display: none">
+            <h5>Egzersiz Seçimi</h5>
+            <div id="exercise-list">
+              <!-- Burada egzersizler listelenecek -->
+            </div>
           </div>
         </div>
-      </nav>
-    </header>
 
-    <!-- Content Bodies-->
-    <div
-      id="login-container"
-      class="container login-container bg-body-tertiary"
-    >
-      <form>
+        <!-- Sağ Panel (Kaydedilen Egzersizler ve Giriş Formu) -->
+        <div class="col-md-8" id="right-panel">
+          <h4>Günün Antremanını Göster</h4>
+          <div id="saved-exercises">
+            <ul id="saved-exercises-list" class="list-group">
+              <!-- Kaydedilen egzersizler burada listelenecek -->
+            </ul>
+          </div>
+
+          <!-- Ağırlık, Set, Tekrar Giriş Formu -->
+          <div id="exercise-entry-details" style="display: none">
+            <h5>Egzersiz Detayları</h5>
+            <form id="exercise-form">
+              <div class="mb-3">
+                <label for="weight" class="form-label">Ağırlık (kg)</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="weight"
+                  name="weight"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="sets" class="form-label">Set Sayısı</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="sets"
+                  name="sets"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="reps" class="form-label">Tekrar Sayısı</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="reps"
+                  name="reps"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-success w-100">
+                Egzersizi Kaydet
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- Egzersiz Geçmişi Paneli -->
+      <div id="exercise-history" style="display: none" class="mt-4">
+        <h5>Geçmiş Performanslar</h5>
+        <div id="history-list">
+          <!-- Geçmiş performanslar burada gösterilecek -->
+        </div>
+      </div>
+
+      <!-- Karşılaştırma Tablosu Bölümü -->
+      <div id="comparison-section" style="display: none">
+        <h5>Performans Karşılaştırması</h5>
+
+        <!-- Performans Parametresi Seçimi -->
         <div class="mb-3">
-          <label for="login-username" class="login-username-label"
-            >Username</label
+          <label for="comparison-metric" class="form-label"
+            >Karşılaştırmak istediğiniz parametre:</label
           >
-          <input type="text" id="login-username" class="login-username" />
+          <select id="comparison-metric" class="form-select">
+            <option value="weight">Ağırlık (Weight)</option>
+            <option value="volume">Hacim (Volume)</option>
+          </select>
         </div>
 
+        <!-- Yaş Aralığı Seçimi -->
         <div class="mb-3">
-          <label for="login-password" class="login-password-label"
-            >Password</label
-          >
-          <input type="password" id="login-password" class="login-password" />
+          <label for="age-range" class="form-label">Yaş Aralığı:</label>
+          <select id="age-range" class="form-select">
+            <option value="all">Tüm Yaşlar</option>
+            <option value="18-25">18-25</option>
+            <option value="26-35">26-35</option>
+            <option value="36-45">36-45</option>
+            <option value="46-55">46-55</option>
+            <option value="55+">55+</option>
+          </select>
         </div>
-        <button type="button" class="btn btn-primary" onclick="handleLogin()">
-          Login
-        </button>
-        <button
-          type="button"
-          class="btn btn-primary"
-          onclick="handleRegister()"
-        >
-          Register
-        </button>
-      </form>
-    </div>
 
-    <div id="home-container" class="container home-container">
-      <p>Welcome, <span class="username-text"></span></p>
-    </div>
-
-    <div id="gym-container" class="container gym-container">
-      <h2>Gyms</h2>
-      <table id="gyms-table" class="table table-secondary">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Location</th>
-            <th scope="col">Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Rows will be populated here -->
-        </tbody>
-      </table>
-
-      <h2>Gym Leaderboard</h2>
-      <div>
-        <select
-          id="leaderboard-selected-exercise"
-          class="form-select"
-          onchange="handleLeaderboardSelectGym()"
-        >
-          <option selected value="">Select Exercise</option>
-          <option value="bench">Bench</option>
-          <option value="squat">Squat</option>
-          <option value="row">Row</option>
-        </select>
-
-        <table
-          id="gym-leaderboard-table"
-          class="table table-primary"
-          style="display: none"
-        >
+        <!-- Cinsiyet Seçimi -->
+        <div class="mb-3">
+          <label for="gender" class="form-label">Cinsiyet:</label>
+          <select id="gender" class="form-select">
+            <option value="all">Tüm Cinsiyetler</option>
+            <option value="male">Erkek</option>
+            <option value="female">Kadın</option>
+          </select>
+        </div>
+        <table class="table table-striped">
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Username</th>
-              <th scope="col">Value1</th>
-              <th scope="col">Value2</th>
+              <th>Kullanıcı</th>
+              <th>Ağırlık (kg)</th>
+              <th>Set</th>
+              <th>Tekrar</th>
             </tr>
           </thead>
           <tbody>
-            <!-- Rows will be populated here -->
+            <!-- Performans verileri buraya dinamik olarak eklenecek -->
+            <tr>
+              <td>Ahmet</td>
+              <td>60</td>
+              <td>4</td>
+              <td>12</td>
+            </tr>
+            <tr>
+              <td>Ayşe</td>
+              <td>55</td>
+              <td>3</td>
+              <td>10</td>
+            </tr>
+            <tr>
+              <td>Mehmet</td>
+              <td>70</td>
+              <td>5</td>
+              <td>8</td>
+            </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <div id="workout-container" class="container workout-container">
-      <p>Add Workout</p>
-    </div>
-
-    <div id="performance-container" class="container performance-container">
-      <p>Show Performances</p>
-    </div>
-
-    <div id="exercise-container" class="container exercise-container">
-      <p>Exercises</p>
-    </div>
-
-    <div id="profile-container" class="container profile-container">
-      <p>Profile</p>
-    </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="script.js"></script>
     <script src="api.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
   </body>
 </html>
