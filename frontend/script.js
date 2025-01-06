@@ -1,4 +1,11 @@
+document.addEventListener("DOMContentLoaded", () => {
+    session = getCookie('session')
 
+    if (!session)
+        window.location.href = 'login.html'
+
+    $(".username").text(session);
+});
 
 // Gym ve Trainer Seçimi
 $("#gym-trainer-form").submit(function (event) {
