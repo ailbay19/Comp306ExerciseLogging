@@ -34,6 +34,7 @@ function apiLogin(params) {
   return userDetails;
 }
 
+/*
 function apiRegister(params) {
   if (!params['username']) {
     alert("no username");
@@ -45,6 +46,24 @@ function apiRegister(params) {
   setCookie("session", userDetails['username'])
   return userDetails;
 }
+*/
+function apiRegister(userDetails) {
+  if (!userDetails.email || !userDetails.password) {
+      alert("Email or Password is missing");
+      return null;
+  }
+
+  // Simulate storing user details in a database or backend service
+  localStorage.setItem('userDetails', JSON.stringify(userDetails));
+
+  // Set session cookie for logged-in user
+  setCookie("session", userDetails.email);
+
+  return userDetails;  // Return the user details object
+}
+
+
+
 
 function apiLogout() {
   clearCookie('session');
