@@ -14,9 +14,8 @@ $("#gym-trainer-form").submit(function (event) {
     var gym = $("#gym").val();
     var trainer = $("#trainer").val();
 
-    // Gym ve Hoca Seçimi Yapıldıktan Sonra, Bu Bölüm Kapanacak
-    $("#gym-trainer-form").hide();
-
+    $("#collapseOne").collapse("hide");
+    $("#collapseTwo").collapse("show");
     // Egzersiz Filtreleme Bölümünü Göster
     $("#exercise-filter-form").show();
 });
@@ -55,6 +54,9 @@ $("#exercise-filter").submit(function (event) {
     });
 
     $("#exercise-entry-form").show();
+    $("#collapseTwo").collapse("hide");
+    $("#collapseThree").collapse("show");
+
 });
 
 // Egzersiz Seçimi
@@ -102,6 +104,9 @@ $(document).on("click", ".select-exercise", function () {
             });
         }
     });
+
+    $("#collapseThree").collapse("hide");
+    $("#collapseFour").collapse("show");
 });
 
 // Egzersiz Kaydet
@@ -129,4 +134,7 @@ $("#exercise-form").submit(function (event) {
     // Formu temizle
     $("#exercise-form")[0].reset();
     $("#exercise-entry-details").hide(); // Egzersiz giriş formunu gizle
+
+    $("#collapseThree").collapse("show");
+    $("#collapseFour").collapse("hide");
 });
