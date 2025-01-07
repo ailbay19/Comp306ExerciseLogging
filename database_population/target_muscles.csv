@@ -2,37 +2,29 @@
 Bench Press,Shoulders
 Bench Press,Arms
 Bench Press,Chest
-Squat,Back
 Squat,Legs
-Deadlift,Arms
+Deadlift,Back
 Deadlift,Legs
-Pull-Up,Legs
-Push-Up,Legs
+Pull-Up,Arms
+Push-Up,Chest
 Push-Up,Shoulders
-Dumbbell Curl,Legs
-Lunges,Back
-Lunges,Arms
-Plank,Legs
+Dumbbell Curl,Arms
+Lunges,Legs
+Plank,Core
 Leg Press,Legs
-Overhead Press,Core
-Cable Row,Legs
-Cable Row,Chest
-Cable Row,Core
+Overhead Press,Shoulder
+Cable Row,Back
+Cable Row,Arm
 Tricep Dip,Shoulders
 Tricep Dip,Chest
+Tricep Dip,Arms
 Burpees,Legs
 Burpees,Shoulders
 Kettlebell Swing,Core
-Kettlebell Swing,Chest
+Kettlebell Swing,Leg
 Kettlebell Swing,Arms
-Mountain Climbers,Back
+Mountain Climbers,Shoulder
 Mountain Climbers,Core
 Jumping Jacks,Core
-Jumping Jacks,Back
-Jumping Jacks,Shoulders
-Step-Ups,Arms
-Step-Ups,Back
 Step-Ups,Core
-Russian Twists,Arms
-Russian Twists,Back
-Russian Twists,Legs
+Russian Twists,Core
