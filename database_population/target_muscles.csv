@@ -6,6 +6,7 @@ Squat,Legs
 Deadlift,Back
 Deadlift,Legs
 Pull-Up,Arms
+Pull-Up,Back
 Push-Up,Chest
 Push-Up,Shoulders
 Dumbbell Curl,Arms
@@ -13,18 +14,18 @@ Lunges,Legs
 Plank,Core
 Leg Press,Legs
 Overhead Press,Shoulder
+Overhead Press,Arms
 Cable Row,Back
 Cable Row,Arm
 Tricep Dip,Shoulders
 Tricep Dip,Chest
 Tricep Dip,Arms
 Burpees,Legs
-Burpees,Shoulders
 Kettlebell Swing,Core
 Kettlebell Swing,Leg
 Kettlebell Swing,Arms
 Mountain Climbers,Shoulder
 Mountain Climbers,Core
 Jumping Jacks,Core
-Step-Ups,Core
+Step-Ups,Legs
 Russian Twists,Core
