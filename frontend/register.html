@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <style>
+        body {
+            background-color: #f8f9fa; /* Arka plan rengini belirginleştir */
+        }
+
+        #register-container {
+            max-width: 400px; /* Form genişliği */
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+        }
+
+        .form-control {
+            margin-bottom: 1rem;
+            direction: rtl; /* Sağdan sola hizalama */
+            text-align: left;
+        }
+
+        .btn {
+            font-size: 1rem;
+            padding: 0.75rem;
+            border-radius: 5px;
+            background-color: #007bff; /* Mavi buton */
+            color: white; /* Yazı rengi beyaz */
+            border: none; /* Sınır yok */
+        }
+
+        .w-100 {
+            width: 100%;
+        }
+
+        body {
+            background-color: #f8f9fa; /* Arka plan rengini belirginleştir */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .select-container {
+            position: relative;
+        }
+
+        .select-box {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+
+        .options-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1;
+        }
+
+        .options-container.open {
+            display: block;
+        }
+
+        .option {
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .option:hover {
+            background-color: #f1f1f1;
+        }
+
+        .selected-option {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .selected-option span {
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin-bottom: 5px;
+            display: block; /* Alt alta sıralama */
+        }
+
+        .space {
+            margin-top: 20px;
+        }
+
+        .select-container + .selected-option {
+            margin-top: 10px;
+        }
+
+        .back-btn {
+            margin-top: 10px;
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            background-color: #007bff; 
+            color: white; 
+        }
+
+        .back-btn:hover {
+            background-color: #5a6268;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="register-container" class="container bg-body-tertiary login-container">
+        <h2 class="text-center display-3 mb-4">Create Account</h2>
+        <form id="register-form" class="login-form">
+            <div class="mb-3">
+                <label for="first-name" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="first-name" required>
+            </div>
+            <div class="mb-3">
+                <label for="last-name" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="last-name" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <div class="mb-3">
+                <label for="age" class="form-label">Age</label>
+                <input type="number" class="form-control" id="age" required>
+            </div>
+            <div class="mb-3">
+                <label for="gender" class="form-label">Gender</label>
+                <select class="form-control" id="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="weight" class="form-label">Weight (kg)</label>
+                <input type="number" class="form-control" id="weight" required>
+            </div>
+            <div class="mb-3">
+                <label for="height" class="form-label">Height (cm)</label>
+                <input type="number" class="form-control" id="height" required>
+            </div>
+            <!-- Gym Selection Section -->
+            <div class="mb-3">
+                <div class="select-container">
+                    <div id="gym-select-box" class="select-box">
+                        Gyms with membership 
+                    </div>
+                    <div id="gym-options" class="options-container">
+                        <div class="option" data-value="gym1">Gym 1</div>
+                        <div class="option" data-value="gym2">Gym 2</div>
+                        <div class="option" data-value="gym3">Gym 3</div>
+                        <div class="option" data-value="gym4">Gym 4</div>
+                    </div>
+                    <div id="selected-gym" class="selected-option"></div>
+                </div>
+            </div>
+            <div class="space"></div>
+            <button type="submit" class="btn w-100">Register</button>
+            <a href="login.html" class="back-btn">Back to Login</a>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery -->
+    <script src="register.js"></script>
+    <script src="api.js"></script>
+</body>
+</html>
