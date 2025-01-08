@@ -34,23 +34,10 @@ function apiLogin(params) {
   return userDetails;
 }
 
-/*
-function apiRegister(params) {
-  if (!params['username']) {
-    alert("no username");
-    return;
-  }
-
-  userDetails = { "username": params["username"] };
-
-  setCookie("session", userDetails['username'])
-  return userDetails;
-}
-*/
 function apiRegister(userDetails) {
   if (!userDetails.email || !userDetails.password) {
-      alert("Email or Password is missing");
-      return null;
+    alert("Email or Password is missing");
+    return null;
   }
 
   // Simulate storing user details in a database or backend service
@@ -61,9 +48,6 @@ function apiRegister(userDetails) {
 
   return userDetails;  // Return the user details object
 }
-
-
-
 
 function apiLogout() {
   clearCookie('session');
@@ -169,5 +153,9 @@ function apiFetchExercises(params) {
 }
 
 function apiFetchPerformances(params) {
+  return null;
+}
+
+function apiPostExercise(params) {
   return null;
 }

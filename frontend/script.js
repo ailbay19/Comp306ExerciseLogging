@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = 'login.html'
 
     $(".username").text(session);
+
+    $("#exercise-history").show();
 });
 
 // Gym ve Trainer Seçimi
@@ -41,17 +43,7 @@ $("#exercise-filter").submit(function (event) {
     });
 
     // Filtrelenmiş egzersizleri listele
-    $("#exercise-list").html("");
-    filteredExercises.forEach((exercise) => {
-        $("#exercise-list").append(`
-        <div class="card mb-3 exercise-card" data-exercise="${exercise.name}">
-            <div class="card-body d-flex justify-content-between">
-                <h5 class="card-title">${exercise.name}</h5>
-                <button class="btn btn-primary select-exercise btn-xs" data-exercise="${exercise.name}">Seç</button>
-            </div>
-        </div>
-    `);
-    });
+    populateExercises(filteredExercises);
 
     $("#exercise-entry-form").show();
     $("#collapseTwo").collapse("hide");
@@ -68,42 +60,13 @@ $(document).on("click", ".select-exercise", function () {
     $("#exercise-entry-form").data("exercise", selectedExercise.name); // Egzersiz adını sakla
 
     // Geçmiş performanslar bölümünü güncelle ve göster
-    $("#exercise-history").show();
-    $("#history-list").html("");
-    if (selectedExercise.history.length > 0) {
-        selectedExercise.history.forEach((entry) => {
-            $("#history-list").append(`
-            <div class="history-item">
-                <strong>Ağırlık:</strong> ${entry.weight}kg, <strong>Setler:</strong> ${entry.sets}, <strong>Tekrarlar:</strong> ${entry.reps}
-            </div>
-        `);
-        });
-    } else {
-        $("#history-list").html(
-            "<p>Bu egzersiz için geçmiş performans kaydı bulunmamaktadır.</p>"
-        );
-    }
+    populatePastPerformances(selectedExercise);
 
     // Ağırlık, set, tekrar giriş formunu göster
     $("#exercise-entry-details").show();
 
     // Performans Karşılaştırma bölümünü güncelle ve göster
-    $("#comparison-section").show();
-    $("#comparison-section tbody").html(""); // Eski veriyi temizle
-    exercises.forEach((ex) => {
-        if (ex.name === exerciseName && ex.history.length > 0) {
-            ex.history.forEach((entry) => {
-                $("#comparison-section tbody").append(`
-                <tr>
-                    <td>Me (Ben)</td>
-                    <td>${entry.weight}</td>
-                    <td>${entry.sets}</td>
-                    <td>${entry.reps}</td>
-                </tr>
-            `);
-            });
-        }
-    });
+    populateComparison(selectedExercise);
 
     $("#collapseThree").collapse("hide");
     $("#collapseFour").collapse("show");
@@ -124,12 +87,16 @@ $("#exercise-form").submit(function (event) {
     // Kaydedilen egzersiz bilgisini egzersizin geçmişine ekle
     selectedExercise.history.push({ weight, sets, reps });
 
-    // "Günün Antremanına" ekle
-    $("#saved-exercises-list").append(`
-    <li class="list-group-item">
-        <strong>${selectedExercise.name}</strong>: ${weight}kg, ${sets} Set, ${reps} Tekrar
-    </li>
-`);
+    params = {
+        "workout_id": null, // TODO: setup workout generation?
+        "exercise_name": selectedExerciseName,
+        "weight": weight,
+        "sets": sets,
+        "reps": reps
+    };
+    apiPostExercise(params);
+    appendWorkoutData(params); // Add to todays workout
+
 
     // Formu temizle
     $("#exercise-form")[0].reset();
@@ -138,3 +105,69 @@ $("#exercise-form").submit(function (event) {
     $("#collapseThree").collapse("show");
     $("#collapseFour").collapse("hide");
 });
+
+
+function populateExercises(exercises) {
+    if (exercises == null) {
+        exercises = apiFetchExercises();
+    }
+
+    $("#exercise-list").html("");
+    exercises.forEach((exercise) => {
+        $("#exercise-list").append(`
+        <div class="card mb-3 exercise-card" data-exercise="${exercise.name}">
+            <div class="card-body d-flex justify-content-between">
+                <h5 class="card-title">${exercise.name}</h5>
+                <button class="btn btn-primary select-exercise btn-xs" data-exercise="${exercise.name}">Seç</button>
+            </div>
+        </div>
+    `);
+    });
+}
+
+function populatePastPerformances(exerciseObject) {
+    $("#history-list").html("");
+    if (exerciseObject.history.length > 0) {
+        exerciseObject.history.forEach((entry) => {
+            $("#history-list").append(`
+            <div class="history-item">
+                <strong>Ağırlık:</strong> ${entry.weight}kg, <strong>Setler:</strong> ${entry.sets}, <strong>Tekrarlar:</strong> ${entry.reps}
+            </div>
+        `);
+        });
+    } else {
+        $("#history-list").html(
+            "<p>Bu egzersiz için geçmiş performans kaydı bulunmamaktadır.</p>"
+        );
+    }
+}
+
+// TODO: change this to leaderboard, fetch from api call. current user doesn't have comparison data.
+function populateComparison(params) {
+    return null;
+
+    $("#comparison-section").show();
+    $("#comparison-section tbody").html(""); // Eski veriyi temizle
+    exercises.forEach((ex) => {
+        if (ex.name === exerciseName && ex.history.length > 0) {
+            ex.history.forEach((entry) => {
+                $("#comparison-section tbody").append(`
+                <tr>
+                    <td>Me (Ben)</td>
+                    <td>${entry.weight}</td>
+                    <td>${entry.sets}</td>
+                    <td>${entry.reps}</td>
+                </tr>
+            `);
+            });
+        }
+    });
+}
+
+function appendWorkoutData(params) {
+    $("#saved-exercises-list").append(`
+        <li class="list-group-item">
+            <strong>${params['exercise_name']}</strong>: ${params['weight']}kg, ${params['sets']} Set, ${params['reps']} Tekrar
+        </li>
+    `);
+}
