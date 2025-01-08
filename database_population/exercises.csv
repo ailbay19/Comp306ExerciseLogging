@@ -1,0 +1,46 @@
+﻿name,required_equipment,level
+Bench Press,Barbell,Intermediate
+Incline Bench Press,Barbell,Advanced
+Decline Bench Press,Barbell,Beginner
+Push-Up,Bodyweight,Beginner
+Chest Fly,Dumbbell,Intermediate
+Squat,Barbell,Beginner
+Front Squat,Barbell,Beginner
+Lunges,Bodyweight,Beginner
+Leg Press,Leg Press Machine,Intermediate
+Step-Ups,Dumbbell,Beginner
+Bulgarian Split Squat,Dumbbell,Intermediate
+Deadlift,Barbell,Intermediate
+Sumo Deadlift,Barbell,Advanced
+Pull-Up,Pull-Up Bar,Intermediate
+Chin-Up,Pull-Up Bar,Intermediate
+Rowing Machine,Rowing Machine,Beginner
+T-Bar Row,Barbell,Advanced
+Dumbbell Curl,Dumbbell,Beginner
+Barbell Curl,Barbell,Advanced
+Hammer Curl,Dumbbell,Beginner
+Tricep Dip,Bodyweight,Beginner
+Skull Crushers,Barbell,Advanced
+Overhead Tricep Extension,Dumbbell,Intermediate
+Plank,Bodyweight,Beginner
+Side Plank,Bodyweight,Beginner
+V-Ups,Bodyweight,Beginner
+Sit-Ups,Bodyweight,Advanced
+Russian Twists,Medicine Ball,Beginner
+Hanging Leg Raises,Pull-Up Bar,Advanced
+Mountain Climbers,Bodyweight,Advanced
+Jump Rope,Jump Rope,Intermediate
+Jumping Jacks,Bodyweight,Advanced
+Burpees,Bodyweight,Intermediate
+Battle Ropes,Battle Ropes,Intermediate
+Sled Push,Sled,Beginner
+Overhead Press,Barbell,Advanced
+Arnold Press,Dumbbell,Intermediate
+Kettlebell Swing,Kettlebell,Intermediate
+Front Raise,Dumbbell,Intermediate
+Lateral Raise,Dumbbell,Advanced
+Hamstring Stretch,Bodyweight,Advanced
+Donkey Kicks,Bodyweight,Beginner
+Calf Raises,Bodyweight,Advanced
+Hip Thrusts,Barbell,Advanced
+Face Pulls,Cable Machine,Advanced
