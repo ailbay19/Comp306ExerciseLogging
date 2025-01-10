@@ -1,12 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
     session = getCookie('session')
 
-    if (!session)
-        window.location.href = 'login.html'
+    //if (!session)
+    //    window.location.href = 'login.html'
 
     $(".username").text(session);
 
-    $("#exercise-history").show();
 });
 
 // Gym ve Trainer Seçimi
@@ -20,6 +19,11 @@ $("#gym-trainer-form").submit(function (event) {
     $("#collapseTwo").collapse("show");
     // Egzersiz Filtreleme Bölümünü Göster
     $("#exercise-filter-form").show();
+
+    
+
+    // "End Workout" butonunu görünür yap
+    $("#finish-workout-btn").show();
 });
 
 // Egzersiz Filtreleme
@@ -70,6 +74,9 @@ $(document).on("click", ".select-exercise", function () {
 
     $("#collapseThree").collapse("hide");
     $("#collapseFour").collapse("show");
+
+    $("#exercise-history").show();
+    $("comparison-section").show();
 });
 
 // Egzersiz Kaydet
@@ -118,7 +125,7 @@ function populateExercises(exercises) {
         <div class="card mb-3 exercise-card" data-exercise="${exercise.name}">
             <div class="card-body d-flex justify-content-between">
                 <h5 class="card-title">${exercise.name}</h5>
-                <button class="btn btn-primary select-exercise btn-xs" data-exercise="${exercise.name}">Seç</button>
+                <button class="btn btn-primary select-exercise btn-xs" data-exercise="${exercise.name}">Choose</button>
             </div>
         </div>
     `);
@@ -131,19 +138,20 @@ function populatePastPerformances(exerciseObject) {
         exerciseObject.history.forEach((entry) => {
             $("#history-list").append(`
             <div class="history-item">
-                <strong>Ağırlık:</strong> ${entry.weight}kg, <strong>Setler:</strong> ${entry.sets}, <strong>Tekrarlar:</strong> ${entry.reps}
+                <strong>Weight:</strong> ${entry.weight}kg, <strong>Sets:</strong> ${entry.sets}, <strong>Reps:</strong> ${entry.reps}
             </div>
         `);
         });
     } else {
         $("#history-list").html(
-            "<p>Bu egzersiz için geçmiş performans kaydı bulunmamaktadır.</p>"
+            "<p>There is no track record for this exercise.</p>"
         );
     }
 }
 
 // TODO: change this to leaderboard, fetch from api call. current user doesn't have comparison data.
 function populateComparison(params) {
+    $("#comparison-section").show();
     return null;
 
     $("#comparison-section").show();
@@ -167,7 +175,7 @@ function populateComparison(params) {
 function appendWorkoutData(params) {
     $("#saved-exercises-list").append(`
         <li class="list-group-item">
-            <strong>${params['exercise_name']}</strong>: ${params['weight']}kg, ${params['sets']} Set, ${params['reps']} Tekrar
+            <strong>${params['exercise_name']}</strong>: ${params['weight']}kg, ${params['sets']} Sets, ${params['reps']} Reps
         </li>
     `);
 }
