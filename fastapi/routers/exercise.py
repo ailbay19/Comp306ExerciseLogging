@@ -52,3 +52,37 @@ def filter_exercises(
     ]
 
     return {"exercises": result}
+
+
+@router.get("/exercises/multi_muscle")
+def get_exercises_targeting_multiple_muscles():
+    """
+    Get exercises that primarily target more than one muscle group.
+    - Returns exercises along with the count of targeted muscle groups.
+    - Ordered by the number of muscle groups in descending order.
+    """
+    try:
+        query = """
+            SELECT 
+                e.name AS ExerciseName,
+                COUNT(tm.muscle) AS TargetedMuscles
+            FROM 
+                Exercise e
+            JOIN 
+                Target_Muscle tm ON e.name = tm.exercise_name
+            GROUP BY 
+                e.name
+            HAVING 
+                COUNT(tm.muscle) > 1
+            ORDER BY 
+                COUNT(tm.muscle) DESC;
+        """
+        db_cursor.execute(query)
+        result = db_cursor.fetchall()
+
+        if result:
+            return {"exercises": result}
+        else:
+            return {"message": "No exercises target more than one muscle group."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving exercises: {str(e)}")
