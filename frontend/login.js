@@ -7,18 +7,17 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function login() {
-    const username = document.getElementById("login-username").value;
-    const password = document.getElementById("login-password").value;
+    email = document.getElementById("login-username").value;
+    password = document.getElementById("login-password").value;
 
-    params = { "username": username, "password": password };
+    params = { "email": email, "password": password };
 
     userDetails = apiLogin(params);
     if (!userDetails) {
-        alert("no");
+        alert("wrong email password")
         return;
     }
-    console.log(userDetails);
 
-    localStorage.setItem("userDetails", userDetails);
+    localStorage.setItem("userDetails", JSON.stringify(userDetails));
     window.location.href = 'index.html';
 }

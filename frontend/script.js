@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    session = getCookie('session')
-
-    //if (!session)
-    //    window.location.href = 'login.html'
+    session = getCookie('session');
+    console.log("ASDASD");
+    if (session === "") {
+        window.location.href = 'login.html'
+        return
+    }
 
     $(".username").text(session);
 
@@ -20,7 +22,7 @@ $("#gym-trainer-form").submit(function (event) {
     // Egzersiz Filtreleme Bölümünü Göster
     $("#exercise-filter-form").show();
 
-    
+
 
     // "End Workout" butonunu görünür yap
     $("#finish-workout-btn").show();
