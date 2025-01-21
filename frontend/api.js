@@ -1,3 +1,5 @@
+apiUrl = ''
+
 function setCookie(cname, cvalue, exdays) {
   const d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -25,29 +27,81 @@ function clearCookie(name) {
 }
 
 function apiLogin(params) {
-  if (!params['username'])
-    params['username'] = 'Guest User';
+  email = params['email'];
+  password = params['password'];
 
-  userDetails = { "username": params["username"] };
-
-  setCookie("session", userDetails['username'])
-  return userDetails;
-}
-
-function apiRegister(userDetails) {
-  if (!userDetails.email || !userDetails.password) {
-    alert("Email or Password is missing");
+  if (!email || !password) {
+    console.error("Email and password are required for login.");
     return null;
   }
 
-  // Simulate storing user details in a database or backend service
-  localStorage.setItem('userDetails', JSON.stringify(userDetails));
+  url = `${apiUrl}/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
 
-  // Set session cookie for logged-in user
-  setCookie("session", userDetails.email);
+  xhr = new XMLHttpRequest();
+  xhr.open("GET", url, false);
 
-  return userDetails;  // Return the user details object
+  try {
+    xhr.send();
+
+    if (xhr.status === 200) {
+      response = JSON.parse(xhr.responseText);
+
+      if (response.message === "Login successful") {
+        userDetails = response.user;
+
+        setCookie("session", userDetails.email);
+
+        return userDetails;
+      } else {
+        console.error(response.message || "Login failed.");
+        return null;
+      }
+    } else {
+      console.error(`Failed to fetch login endpoint. Status: ${xhr.status}`);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+    return null;
+  }
 }
+
+
+
+function apiRegister(userDetails) {
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", apiUrl + "/register", false);
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  try {
+    xhr.send(JSON.stringify({
+      email: userDetails.email,
+      password: userDetails.password,
+      fname: userDetails.firstName,
+      lname: userDetails.lastName,
+      age: parseInt(userDetails.age),
+      gender: userDetails.gender,
+      weight: parseFloat(userDetails.weight),
+      height: parseFloat(userDetails.height),
+    }));
+
+    if (xhr.status === 200) {
+      const response = JSON.parse(xhr.responseText);
+      console.log(response.message);
+
+      setCookie("session", userDetails.email);
+
+      return userDetails;
+    } else {
+      console.error("Registration failed:", xhr.responseText);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error during registration:", error);
+    return null;
+  }
+}
+
 
 function apiLogout() {
   clearCookie('session');
