@@ -86,3 +86,39 @@ def get_exercises_targeting_multiple_muscles():
             return {"message": "No exercises target more than one muscle group."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error retrieving exercises: {str(e)}")
+    
+@router.get("/top_exercises_by_level")
+def get_top_exercises_by_level(level: str):
+    """
+    Retrieve the top 10 exercises based on the number of distinct users who performed them,
+    filtered by the specified level ('Beginner', 'Intermediate', 'Advanced').
+    """
+    query = """
+    SELECT 
+        e.name AS ExerciseName, 
+        user_counts.UserCount
+    FROM 
+        Exercise e
+    JOIN 
+        (
+            SELECT 
+                p.exercise_name AS ExerciseName, 
+                COUNT(DISTINCT w.reg_user_id) AS UserCount
+            FROM 
+                Performance p
+            JOIN 
+                Workout w ON p.workout_id = w.id
+            JOIN 
+                Exercise ex ON p.exercise_name = ex.name
+            WHERE 
+                ex.level = %s
+            GROUP BY 
+                p.exercise_name
+        ) user_counts ON e.name = user_counts.ExerciseName
+    ORDER BY 
+        user_counts.UserCount DESC
+    LIMIT 10;
+    """
+    db_cursor.execute(query, (level,))
+    results = db_cursor.fetchall()
+    return {"level": level, "top_exercises": results}
