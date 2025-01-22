@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     $(".username").text(session);
+    selectedEx = null;
     populateSpecialLeaderboard();
 });
 
@@ -59,7 +60,7 @@ $("#exercise-filter").submit(function (event) {
 // Egzersiz Seçimi
 $(document).on("click", ".select-exercise", function () {
     var exerciseName = $(this).data("exercise");
-
+    selectedEx = exerciseName;
     // Egzersiz bilgilerini göster
     var selectedExercise = exercises.find((ex) => ex.name === exerciseName);
     $("#exercise-entry-form").data("exercise", selectedExercise.name); // Egzersiz adını sakla
@@ -71,7 +72,9 @@ $(document).on("click", ".select-exercise", function () {
     $("#exercise-entry-details").show();
     console.log("HIHIHI");
     // Performans Karşılaştırma bölümünü güncelle ve göster
-    populateComparison(selectedExercise);
+    populateComparison();
+    document.querySelector("#age-range").addEventListener("change", populateComparison);
+    document.querySelector("#gender").addEventListener("change", populateComparison);
 
     $("#collapseThree").collapse("hide");
     $("#collapseFour").collapse("show");
@@ -134,9 +137,11 @@ function populateExercises(exercises) {
 }
 
 function populatePastPerformances(exerciseObject) {
+    params = {};
+    perfs = exerciseObject.history //apiFetchPerformances(params)
     $("#history-list").html("");
-    if (exerciseObject.history.length > 0) {
-        exerciseObject.history.forEach((entry) => {
+    if (perfs.length > 0) {
+        perfs.forEach((entry) => {
             $("#history-list").append(`
             <div class="history-item">
                 <strong>Weight:</strong> ${entry.weight}kg, <strong>Sets:</strong> ${entry.sets}, <strong>Reps:</strong> ${entry.reps}
@@ -151,10 +156,25 @@ function populatePastPerformances(exerciseObject) {
 }
 
 // TODO: change this to leaderboard, fetch from api call. current user doesn't have comparison data.
-function populateComparison(selectedExercise) {
+function populateComparison() {
     $("#comparison-section").show();
-    params['exercise_name'] = selectedExercise.name;
+    params = {}
+    params['exercise_name'] = selectedEx;
+
+    selectedGender = document.querySelector("#gender").value;
+    if (selectedGender !== "all") {
+        params['gender'] = selectedGender;
+    }
+
+    ageRange = document.querySelector("#age-range").value;
+    if (ageRange !== "all") {
+        [ageMin, ageMax] = ageRange.split("-").map(Number);
+        if (ageMin) params['age_min'] = ageMin;
+        if (ageMax) params['age_max'] = ageMax;
+    }
+
     leadData = apiFetchLeaderboard(params);
+    $("#comparison-section tbody").html("")
     leadData.forEach((data) => {
         row = `<tr>`;
         data.forEach((value) => {

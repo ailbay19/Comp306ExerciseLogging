@@ -134,7 +134,11 @@ function apiFetchGyms(params) {
 
 function apiFetchLeaderboard(params) {
   const xhr = new XMLHttpRequest();
-  xhr.open("GET", apiUrl + "/top_users_at_certain_exercise?" + "exercise_name=" + params['exercise_name'], false);
+
+  queryString = new URLSearchParams(params).toString();
+  url = `${apiUrl}/top_users_at_certain_exercise?${queryString}`;
+
+  xhr.open("GET", url, false);
   xhr.setRequestHeader("Content-Type", "application/json");
 
   try {

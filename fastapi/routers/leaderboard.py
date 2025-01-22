@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Query
 from db import get_db
+from typing import Optional
 
 router = APIRouter()
 
@@ -7,12 +8,22 @@ router = APIRouter()
 db_connection, db_cursor = get_db()
 
 @router.get("/top_users_at_certain_exercise")
-def get_top_users_at_certain_exercise(exercise_name: str):
+def get_top_users_at_certain_exercise(exercise_name: str, gender: Optional[str] = None, age_min: Optional[int] = None, age_max: Optional[int] = None):
     """
     Retrieve id's, fname, lname of users, exercisename of exercise
       and totalWeightLifted for a specific exercise by each user 
       order w.r.t totalweightlifted descending limit by 10
     """
+    wheres = ""
+    if(gender):
+        wheres += "AND u.gender = '" + gender + "' "
+    
+    if(age_min):
+        wheres += "AND u.age > " + "'" + str(age_min) + "' "
+        
+    if(age_max):
+        wheres += "AND u.age < " + "'" + str(age_max) + "' "
+    
     query = """
         SELECT 
         u.id AS User, 
@@ -33,6 +44,7 @@ def get_top_users_at_certain_exercise(exercise_name: str):
             User u ON u.id = w.reg_user_id
         WHERE 
             e.name = %s
+        """ + wheres +"""
         GROUP BY 
             u.id, u.fname, u.lname, e.name
         ORDER BY 
