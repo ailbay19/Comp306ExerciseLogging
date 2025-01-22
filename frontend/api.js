@@ -70,6 +70,7 @@ function apiLogin(params) {
 
 function apiRegister(userDetails) {
   const xhr = new XMLHttpRequest();
+
   xhr.open("POST", apiUrl + "/register", false);
   xhr.setRequestHeader("Content-Type", "application/json");
 
