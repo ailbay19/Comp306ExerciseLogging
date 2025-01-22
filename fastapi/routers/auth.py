@@ -48,7 +48,7 @@ def register(id: str,
         db_cursor.execute(query_membership, (id, gym_name, gym_location, start_date, due_date))
     
     db_connection.commit()
-    return {"message": "User registered and gym memberships added successfully."}
+    return login(email, password)
 
 
 
@@ -59,7 +59,20 @@ def login(email: str, password: str):
     db_cursor.execute(query, (email, password))
     user = db_cursor.fetchone()
     if user:
-        return {"message": "Login successful", "user": user}
+        return {"message": "Login successful", "user":  map_db_user_to_json(user)}
     else:
             return {"message": "Invalid mail or password"}
 
+def map_db_user_to_json(user):
+    user_data = {
+            "id": user[0],
+            "email": user[1],
+            "password": user[2],
+            "fname": user[3],
+            "lname": user[4],
+            "age": user[5],
+            "gender": user[6],
+            "weight": user[7],
+            "height": user[8],
+        }
+    return user_data

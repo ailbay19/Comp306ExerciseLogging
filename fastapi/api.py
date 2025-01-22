@@ -1,9 +1,12 @@
 from fastapi import FastAPI
 from routers import auth, user, exercise, workout, leaderboard # Import routers
+from fastapi.staticfiles import StaticFiles
 
 # Create an instance of FastAPI
 app = FastAPI()
 
+# Include frontend
+app.mount("/app", StaticFiles(directory="../frontend"), name="frontend")
 
 # Include routers
 app.include_router(auth.router, tags=["Authentication"])
