@@ -15,12 +15,15 @@ def get_top_users_at_certain_exercise(exercise_name: str):
     """
     query = """
         SELECT 
-            u.id AS UserID,
-            u.fname,
-            u.lname,
-            e.name AS ExerciseName,
-            SUM(p.weight * p.reps * p.sets) AS TotalWeightLifted
-        FROM 
+        u.id AS User, 
+        u.age AS Age,
+        u.gender AS Gender,
+        u.weight AS Weight,
+        u.height AS Height,
+        SUM(p.weight * p.reps * p.sets) AS TotalWeightLifted,
+        AVG(p.sets) AS Sets,
+        AVG(p.reps) AS Reps
+    FROM  
             Performance p
         JOIN
             Workout w ON w.id = p.workout_id
