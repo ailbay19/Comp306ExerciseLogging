@@ -133,27 +133,58 @@ function apiFetchGyms(params) {
 }
 
 function apiFetchLeaderboard(params) {
-  // params = {"gym": "user-gym", "exercise": selectedExercise}
-  const leaderboardData = [
-    {
-      "rank": 1,
-      "username": "user1",
-      "value1": "100kg",
-      "value2": "120 reps?"
-    },
-    {
-      "rank": 2,
-      "username": "user2",
-      "value1": "30kg",
-      "value2": "120 reps?"
-    },
-    {
-      "rank": 3,
-      "username": "Gym C",
-      "value1": "20kg",
-      "value2": "120 reps?"
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", apiUrl + "/top_users_at_certain_exercise?" + "exercise_name=" + params['exercise_name'], false);
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  try {
+    xhr.send();
+
+    if (xhr.status === 200) {
+      const response = JSON.parse(xhr.responseText);
+
+      leaderboard = response.top_exercises.map(exercise => ({
+        user_id: exercise[0],
+        age: exercise[1],
+        gender: exercise[2],
+        weight: exercise[3],
+        height: exercise[4],
+        total_weight_lifted: exercise[5],
+        avg_sets: exercise[6],
+        avg_reps: exercise[7]
+      }));
+      return response.top_exercises;
+    } else {
+      console.error("Registration failed:", xhr.responseText);
+      return null;
     }
-  ];
+  } catch (error) {
+    console.error("Error during registration:", error);
+    return null;
+  }
+
+  return leaderboardData;
+}
+
+function apiFetchLeaderboard2(params) {
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", apiUrl + "/top_users_at_certain_exercise2", false);
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  try {
+    xhr.send();
+
+    if (xhr.status === 200) {
+      const response = JSON.parse(xhr.responseText);
+      return response.top_exercises;
+    } else {
+      console.error("Registration failed:", xhr.responseText);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error during registration:", error);
+    return null;
+  }
 
   return leaderboardData;
 }

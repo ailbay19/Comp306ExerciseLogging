@@ -1,13 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
     session = getCookie('session');
-    console.log("ASDASD");
     if (session === "") {
         window.location.href = 'login.html'
         return
     }
 
     $(".username").text(session);
-
+    populateSpecialLeaderboard();
 });
 
 // Gym ve Trainer Seçimi
@@ -70,7 +69,7 @@ $(document).on("click", ".select-exercise", function () {
 
     // Ağırlık, set, tekrar giriş formunu göster
     $("#exercise-entry-details").show();
-
+    console.log("HIHIHI");
     // Performans Karşılaştırma bölümünü güncelle ve göster
     populateComparison(selectedExercise);
 
@@ -152,26 +151,32 @@ function populatePastPerformances(exerciseObject) {
 }
 
 // TODO: change this to leaderboard, fetch from api call. current user doesn't have comparison data.
-function populateComparison(params) {
+function populateComparison(selectedExercise) {
     $("#comparison-section").show();
-    return null;
-
-    $("#comparison-section").show();
-    $("#comparison-section tbody").html(""); // Eski veriyi temizle
-    exercises.forEach((ex) => {
-        if (ex.name === exerciseName && ex.history.length > 0) {
-            ex.history.forEach((entry) => {
-                $("#comparison-section tbody").append(`
-                <tr>
-                    <td>Me (Ben)</td>
-                    <td>${entry.weight}</td>
-                    <td>${entry.sets}</td>
-                    <td>${entry.reps}</td>
-                </tr>
-            `);
-            });
-        }
+    params['exercise_name'] = selectedExercise.name;
+    leadData = apiFetchLeaderboard(params);
+    leadData.forEach((data) => {
+        row = `<tr>`;
+        data.forEach((value) => {
+            row += `<td>${value}</td>`; // Add each value in a new <td>
+        });
+        row += `</tr>`;
+        $("#comparison-section tbody").append(row);
     });
+    return null;
+}
+
+function populateSpecialLeaderboard() {
+    leadData = apiFetchLeaderboard2();
+    leadData.forEach((data) => {
+        row = `<tr>`;
+        data.forEach((value) => {
+            row += `<td>${value}</td>`; // Add each value in a new <td>
+        });
+        row += `</tr>`;
+        $("#leaderboard2 tbody").append(row);
+    });
+    return null;
 }
 
 function appendWorkoutData(params) {
